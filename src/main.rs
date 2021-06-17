@@ -18,6 +18,7 @@ fn main() {
 
     let file_name = args.value_of("FILE").unwrap();
     println!("interpreting file {}", file_name);
+    run_file(file_name.to_string());
 }
 
 fn run_file(path: String) {
@@ -39,4 +40,12 @@ fn run(data: &str) {
     for t in &tokens {
         println!("{}", t);
     }
+}
+
+fn error(line: u32, msg: String) {
+    report(line, "".to_string(), msg);
+}
+
+fn report(line: u32, w: String, msg: String) {
+    println!("[{}] Error{}: {}", line, w, msg);
 }
