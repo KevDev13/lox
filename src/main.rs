@@ -5,6 +5,8 @@ use std::fs::File;
 
 mod tokentype;
 use tokentype::*;
+mod token;
+use token::*;
 
 static mut had_error: bool = false;
 
