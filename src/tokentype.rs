@@ -2,21 +2,21 @@
 
 pub enum TokenType {
     // single-char tokens
-    LEFT_PAREN, RIGHT_PAREN, LEFT_BRACE, RIGHT_BRACE,
-    COMMA, DOT, PLUS, MINUS, SEMICOLON, SLASH, STAR,
+    LeftParen, RightParen, LeftBrace, RightBrace,
+    Comma, Dot, Plus, Minus, Semicolon, Slash, Star,
 
     // one or two char tokens
-    BANG, BANG_EQUAL,
-    EQUAL, EQUAL_EQUAL,
-    GREATER, GREATER_EQUAL,
-    LESS, LESS_EQUAL,
+    Bang, BangEqual,
+    Equal, EqualEqual,
+    Greater, GreaterEqual,
+    Less, LessEqual,
 
     // literals
-    IDENTIFIER, STRING, NUMBER,
+    Identifier, String, Number,
 
     // keywords
-    AND, CLASS, ELSE, FALSE, FUN, FOR, IF, NIL, OR, PRINT, RETURN, SUPER,
-    THIS, TRUE, VAR, WHILE,
+    And, Class, Else, Flase, Fun, For, If, Nil,
+    Or, Print, Return, Super, This, True, Var, While,
 
-    EOF,
+    Eof,
 }
