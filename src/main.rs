@@ -32,10 +32,15 @@ fn run_file(path: String) {
     };
 
     run(data_as_string);
+
+    if unsafe {had_error} {
+        return;
+    }
 }
 
 fn run(data: &str) {
-    let mut tokens: Vec<&str> = Vec::new();
+    // let mut scanner: Scanner = scan_data(data);
+    let tokens: Vec<&str> = Vec::new(); // = scan_tokens(scanner);
 
     for t in &tokens {
         println!("{}", t);
@@ -48,4 +53,7 @@ fn error(line: u32, msg: String) {
 
 fn report(line: u32, w: String, msg: String) {
     println!("[{}] Error{}: {}", line, w, msg);
+    unsafe {
+        had_error = true;
+    }
 }
