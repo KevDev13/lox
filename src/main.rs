@@ -1,9 +1,9 @@
 use clap::{ Arg, App };
-use std::io;
 use std::io::Read;
 use std::str;
-use std::io::prelude::*;
 use std::fs::File;
+
+static mut had_error: bool = false;
 
 fn main() {
     //println!("Lox interpreter!");
