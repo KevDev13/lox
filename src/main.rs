@@ -3,6 +3,9 @@ use std::io::Read;
 use std::str;
 use std::fs::File;
 
+mod tokentype;
+use tokentype::*;
+
 static mut had_error: bool = false;
 
 fn main() {
