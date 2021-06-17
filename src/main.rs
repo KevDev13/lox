@@ -31,14 +31,14 @@ fn run_file(path: String) {
         Err(e) => panic!("Error converting Lox file {} to string: {}", path, e),
     };
 
-    run(data_as_string);
+    run(data_as_string.to_string());
 
     if unsafe {had_error} {
         return;
     }
 }
 
-fn run(data: &str) {
+fn run(data: String) {
     // let mut scanner: Scanner = scan_data(data);
     let tokens: Vec<&str> = Vec::new(); // = scan_tokens(scanner);
 
