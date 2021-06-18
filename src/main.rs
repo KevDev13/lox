@@ -3,8 +3,6 @@ use std::io::Read;
 use std::str;
 use std::fs::File;
 
-mod tokentype;
-use tokentype::*;
 mod token;
 use token::*;
 
