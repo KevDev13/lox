@@ -1,12 +1,21 @@
 use clap::{ Arg, App };
 use std::io::Read;
 use std::str;
-use std::fs::File;
 
 mod token;
 use token::*;
 
 static mut had_error: bool = false;
+
+fn had_err() -> bool {
+    unsafe { had_error }
+}
+
+fn declare_error() {
+    unsafe {
+        had_error = true;
+    }
+}
 
 fn main() {
     //println!("Lox interpreter!");
@@ -25,7 +34,7 @@ fn main() {
 }
 
 fn run_file(path: String) {
-    let mut data = Vec::new();
+    /*let mut data = Vec::new();
     let mut f = File::open(&path).expect("error opening file");
     f.read_to_end(&mut data).expect("error reading file");
 
@@ -34,9 +43,13 @@ fn run_file(path: String) {
         Err(e) => panic!("Error converting Lox file {} to string: {}", path, e),
     };
 
-    run(data_as_string.to_string());
+    run(data_as_string.to_string()); */
 
-    if unsafe {had_error} {
+    let data = std::fs::read_to_string(path).expect("Error reading file");
+
+    run(data);
+
+    if had_err() {
         return;
     }
 }
@@ -56,7 +69,5 @@ fn error(line: u32, msg: String) {
 
 fn report(line: u32, w: String, msg: String) {
     println!("[{}] Error{}: {}", line, w, msg);
-    unsafe {
-        had_error = true;
-    }
+    declare_error();
 }
