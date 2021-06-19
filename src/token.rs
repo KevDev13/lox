@@ -35,6 +35,6 @@ pub struct Token {
 // TODO: implement to_string for Token
 impl std::fmt::Display for Token {
     fn fmt(&self, fm: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(fm, "{} {} {}", self.token_type, self.lexeme, self.line)
+        write!(fm, "{:?} {} {}", self.token_type, self.lexeme, self.line)
     }
 }
