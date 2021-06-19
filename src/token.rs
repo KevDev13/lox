@@ -25,14 +25,24 @@ pub enum TokenType {
 // Token and functions
 use std::fmt;
 
+#[derive(Clone, Debug)]
 pub struct Token {
     pub token_type: TokenType,
     pub lexeme: String,
     //pub literal:
-    pub line: u32,
+    pub line: usize,
 }
 
-// TODO: implement to_string for Token
+impl Token {
+    pub fn new(tt: TokenType, lex: String, ln: usize) -> Token {
+        Token {
+            token_type: tt,
+            lexeme: lex,
+            line: ln
+        }
+    }
+}
+
 impl std::fmt::Display for Token {
     fn fmt(&self, fm: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(fm, "{:?} {} {}", self.token_type, self.lexeme, self.line)

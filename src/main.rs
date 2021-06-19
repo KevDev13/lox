@@ -4,6 +4,8 @@ use std::str;
 
 mod token;
 use token::*;
+mod scanner;
+use scanner::*;
 
 static mut had_error: bool = false;
 
