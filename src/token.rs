@@ -29,15 +29,16 @@ use std::fmt;
 pub struct Token {
     pub token_type: TokenType,
     pub lexeme: String,
-    //pub literal:
+    pub literal: Option<Literal>,
     pub line: usize,
 }
 
 impl Token {
-    pub fn new(tt: TokenType, lex: String, ln: usize) -> Token {
+    pub fn new(tt: TokenType, lex: String, lit: Option<Literal>, ln: usize) -> Token {
         Token {
             token_type: tt,
             lexeme: lex,
+            literal: lit,
             line: ln
         }
     }
@@ -47,4 +48,12 @@ impl std::fmt::Display for Token {
     fn fmt(&self, fm: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(fm, "{:?} {} {}", self.token_type, self.lexeme, self.line)
     }
+}
+
+#[derive(Clone, Debug)]
+pub struct Literal {
+    pub string: String,
+    pub number: f64,
+    pub boolean: bool,
+    pub token: TokenType
 }
