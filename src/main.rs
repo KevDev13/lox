@@ -65,11 +65,11 @@ fn run(data: String) {
     }
 }
 
-fn error(line: u32, msg: String) {
+fn error(line: usize, msg: String) {
     report(line, "".to_string(), msg);
 }
 
-fn report(line: u32, w: String, msg: String) {
+fn report(line: usize, w: String, msg: String) {
     println!("[{}] Error{}: {}", line, w, msg);
     declare_error();
 }
