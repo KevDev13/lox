@@ -78,6 +78,24 @@ impl Scanner {
                     self.add_token(TokenType::Greater)
                 }
             }
+            '/' => {
+                if self.match_next('/') {
+                    // there is a commented line, so go to the next line
+                    while self.peek() != '\n' && !self.is_at_end() {
+                        self.advance();
+                    }
+                } else {
+                    self.add_token(TokenType::Slash)
+                }
+            }
+            ' ' | '\r' | '\t' => {} // ignore whitespaces
+            '\n' => {
+                // newline character
+                self.line += 1;
+            }
+            '"' => {
+                self.string()
+            }
             _ => crate::error(self.line, "Unexpected token".to_string()),
         }
     }
@@ -109,5 +127,39 @@ impl Scanner {
         self.current += 1;
 
         true
+    }
+
+    fn peek(&self) -> char {
+        if self.is_at_end() {
+            return '\0';
+        }
+
+        self.source.chars().nth(self.current).expect("Error in peek()")
+    }
+
+    fn string(&mut self) {
+        while self.peek() != '"' && !self.is_at_end() {
+            if self.peek() == '\n' {
+                self.line += 1;
+            }
+
+            self.advance();
+        }
+
+        if self.is_at_end() {
+            crate::error(self.line, "Unterminated string".to_string());
+            return;
+        }
+
+        self.advance();
+
+        let val = self.source[self.start + 1..=self.current - 1].to_string();
+        let lit = Literal {
+            string: val,
+            number: 0.0,
+            boolean: false,
+            token: TokenType::Str,
+        };
+        self.add_token_literal(TokenType::Str, Some(lit));
     }
 }
