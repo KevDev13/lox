@@ -96,7 +96,13 @@ impl Scanner {
             '"' => {
                 self.string()
             }
-            _ => crate::error(self.line, "Unexpected token".to_string()),
+            _ => {
+                if self.is_digit(ch) {
+                    self.number();
+                } else {
+                    crate::error(self.line, "Unexpected token".to_string())
+                }
+            }
         }
     }
 
@@ -161,5 +167,43 @@ impl Scanner {
             token: TokenType::Str,
         };
         self.add_token_literal(TokenType::Str, Some(lit));
+    }
+
+    fn is_digit(&self, c: char) -> bool {
+        c >= '0' && c <= '9'
+    }
+
+    fn number(&mut self) {
+        while self.is_digit(self.peek()) {
+            self.advance();
+        }
+
+        if self.peek() == '.' && self.is_digit(self.peek_next()) {
+            // consume the '.'
+            self.advance();
+
+            while self.is_digit(self.peek()) {
+                self.advance();
+            }
+        }
+
+        let val = self.source[self.start..=self.current].to_string();
+        let val = val.parse::<f64>().expect("Error converting string to f64 in number()");
+        let lit = Literal {
+            string: "".to_string(),
+            number: val,
+            boolean: false,
+            token: TokenType::Number,
+        };
+
+        self.add_token_literal(TokenType::Number, Some(lit));
+    }
+
+    fn peek_next(&self) -> char {
+        if self.current + 1 >= self.source.len() {
+            return '\0';
+        }
+
+        self.source.chars().nth(self.current + 1).expect("error in peek_next")
     }
 }
