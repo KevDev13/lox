@@ -20,7 +20,6 @@ fn declare_error() {
 }
 
 fn main() {
-    //println!("Lox interpreter!");
     let args = App::new("Lox Interpreter")
         .version("0.1")
         .author("Kevin M. Garner <mail@kevingarner.net>")
@@ -36,17 +35,6 @@ fn main() {
 }
 
 fn run_file(path: String) {
-    /*let mut data = Vec::new();
-    let mut f = File::open(&path).expect("error opening file");
-    f.read_to_end(&mut data).expect("error reading file");
-
-    let data_as_string = match str::from_utf8(&data) {
-        Ok(d) => d,
-        Err(e) => panic!("Error converting Lox file {} to string: {}", path, e),
-    };
-
-    run(data_as_string.to_string()); */
-
     let data = std::fs::read_to_string(path).expect("Error reading file");
 
     run(data);
