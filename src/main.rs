@@ -1,3 +1,7 @@
+
+#[macro_use]
+extern crate lazy_static;
+
 use clap::{ Arg, App };
 use std::io::Read;
 use std::str;

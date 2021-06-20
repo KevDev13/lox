@@ -1,7 +1,9 @@
 
+use lazy_static;
 use crate::Token;
 use crate::TokenType;
 use crate::Literal;
+use std::collections::HashMap;
 
 pub struct Scanner {
     source: String,
@@ -99,6 +101,8 @@ impl Scanner {
             _ => {
                 if self.is_digit(ch) {
                     self.number();
+                } else if self.is_alpha(ch) {
+                    self.identifier();
                 } else {
                     crate::error(self.line, "Unexpected token".to_string())
                 }
@@ -206,4 +210,49 @@ impl Scanner {
 
         self.source.chars().nth(self.current + 1).expect("error in peek_next")
     }
+
+    fn identifier(&mut self) {
+        while self.is_alphanumeric(self.peek()) {
+            self.advance();
+        }
+
+        let text = &self.source[self.start..=self.current];
+        if let Some(tok_type) = KEYWORDS.get(text) {
+            self.add_token(*tok_type);
+        } else {
+            self.add_token(TokenType::Identifier);
+        }
+    }
+
+    fn is_alpha(&self, c: char) -> bool {
+        (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_'
+    }
+
+    fn is_alphanumeric(&self, c: char) -> bool {
+        self.is_alpha(c) || self.is_digit(c)
+    }
+
+}
+
+lazy_static! {
+    static ref KEYWORDS: HashMap<String, TokenType> = {
+        let mut keywords = HashMap::new();
+        keywords.insert("and".to_owned(),       TokenType::And);
+        keywords.insert("class".to_owned(),     TokenType::Class);
+        keywords.insert("else".to_owned(),      TokenType::Else);
+        keywords.insert("false".to_owned(),     TokenType::False);
+        keywords.insert("for".to_owned(),       TokenType::For);
+        keywords.insert("fun".to_owned(),       TokenType::Fun);
+        keywords.insert("if".to_owned(),        TokenType::If);
+        keywords.insert("nil".to_owned(),       TokenType::Nil);
+        keywords.insert("or".to_owned(),        TokenType::Or);
+        keywords.insert("print".to_owned(),     TokenType::Print);
+        keywords.insert("return".to_owned(),    TokenType::Return);
+        keywords.insert("super".to_owned(),     TokenType::Super);
+        keywords.insert("this".to_owned(),      TokenType::This);
+        keywords.insert("true".to_owned(),      TokenType::True);
+        keywords.insert("var".to_owned(),       TokenType::Var);
+        keywords.insert("while".to_owned(),     TokenType::While);
+        keywords
+    };
 }
