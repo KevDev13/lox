@@ -216,12 +216,11 @@ impl Scanner {
             self.advance();
         }
 
-        let text = &self.source[self.start..=self.current];
-        if let Some(tok_type) = KEYWORDS.get(text) {
-            self.add_token(*tok_type);
-        } else {
-            self.add_token(TokenType::Identifier);
-        }
+        let text = &self.source[self.start..self.current];
+        match KEYWORDS.get(text.clone()) {
+            Some(tok) => self.add_token(tok.clone()),
+            None => self.add_token(TokenType::Identifier)
+        };
     }
 
     fn is_alpha(&self, c: char) -> bool {
@@ -236,7 +235,7 @@ impl Scanner {
 
 lazy_static! {
     static ref KEYWORDS: HashMap<String, TokenType> = {
-        let mut keywords = HashMap::new();
+        let mut keywords: HashMap<String, TokenType>= HashMap::new();
         keywords.insert("and".to_owned(),       TokenType::And);
         keywords.insert("class".to_owned(),     TokenType::Class);
         keywords.insert("else".to_owned(),      TokenType::Else);
