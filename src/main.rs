@@ -45,8 +45,8 @@ fn run_file(path: String) {
 }
 
 fn run(data: String) {
-    // let mut scanner: Scanner = scan_data(data);
-    let tokens: Vec<&str> = Vec::new(); // = scan_tokens(scanner);
+    let mut scanner: Scanner = Scanner::new(data);
+    let tokens = scanner.scan_tokens();
 
     for t in &tokens {
         println!("{}", t);
