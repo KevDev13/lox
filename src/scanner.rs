@@ -121,7 +121,7 @@ impl Scanner {
     }
 
     fn add_token_literal(&mut self, ty: TokenType, lit: Option<Literal>) {
-        let text = &self.source[self.start..=self.current];
+        let text = &self.source[self.start..self.current];
         self.tokens.push(Token::new(ty, text.to_string(), lit, self.line));
     }
 
@@ -163,7 +163,7 @@ impl Scanner {
 
         self.advance();
 
-        let val = self.source[self.start + 1..=self.current - 1].to_string();
+        let val = self.source[self.start + 1..self.current - 1].to_string();
         let lit = Literal {
             string: val,
             number: 0.0,
@@ -191,7 +191,7 @@ impl Scanner {
             }
         }
 
-        let val = self.source[self.start..=self.current].to_string();
+        let val = self.source[self.start..self.current].to_string();
         let val = val.parse::<f64>().expect("Error converting string to f64 in number()");
         let lit = Literal {
             string: "".to_string(),
