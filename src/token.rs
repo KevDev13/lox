@@ -23,7 +23,6 @@ pub enum TokenType {
 }
 
 // Token and functions
-use std::fmt;
 
 #[derive(Clone, Debug)]
 pub struct Token {

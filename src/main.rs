@@ -3,23 +3,23 @@
 extern crate lazy_static;
 
 use clap::{ Arg, App };
-use std::io::Read;
-use std::str;
+//use std::io::Read;
+//use std::str;
 
 mod token;
 use token::*;
 mod scanner;
 use scanner::*;
 
-static mut had_error: bool = false;
+static mut HAD_ERROR: bool = false;
 
 fn had_err() -> bool {
-    unsafe { had_error }
+    unsafe { HAD_ERROR }
 }
 
 fn declare_error() {
     unsafe {
-        had_error = true;
+        HAD_ERROR = true;
     }
 }
 
