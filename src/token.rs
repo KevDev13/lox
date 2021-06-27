@@ -50,9 +50,8 @@ impl std::fmt::Display for Token {
 }
 
 #[derive(Clone, Debug)]
-pub struct Literal {
-    pub string: String,
-    pub number: f64,
-    pub boolean: bool,
-    pub token: TokenType
+pub enum Literal {
+    Str(String),
+    Number(f64),
+    Boolean(bool),
 }

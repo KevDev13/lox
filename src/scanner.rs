@@ -164,12 +164,7 @@ impl Scanner {
         self.advance();
 
         let val = self.source[self.start + 1..self.current - 1].to_string();
-        let lit = Literal {
-            string: val,
-            number: 0.0,
-            boolean: false,
-            token: TokenType::Str,
-        };
+        let lit = Literal::Str(val);
         self.add_token_literal(TokenType::Str, Some(lit));
     }
 
@@ -193,12 +188,7 @@ impl Scanner {
 
         let val = self.source[self.start..self.current].to_string();
         let val = val.parse::<f64>().expect("Error converting string to f64 in number()");
-        let lit = Literal {
-            string: "".to_string(),
-            number: val,
-            boolean: false,
-            token: TokenType::Number,
-        };
+        let lit = Literal::Number(val);
 
         self.add_token_literal(TokenType::Number, Some(lit));
     }
