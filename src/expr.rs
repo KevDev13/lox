@@ -15,7 +15,7 @@ pub enum Expr {
     Call {
         callee: Box<Expr>,
         paren: Token,
-        args: Vec<Box<Expr>>,
+        args: Vec<Expr>,
     },
     Get {
         obj: Box<Expr>,
