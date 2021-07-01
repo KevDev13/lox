@@ -70,3 +70,23 @@ pub trait Visitor<T> {
 pub trait Accept<T> {
     fn accept(&self, v: &mut dyn Visitor<T>) -> T;
 }
+
+impl<T> Accept<T> for Expr {
+    fn accept(&self, v: &mut dyn Visitor<T>) -> T {
+        use Expr::*;
+        match self {
+            Assign { name, value } => v.visit_assign(name, value),
+            Binary { left, oper, right } => v.visit_binary(left, oper, right),
+            Call { callee, paren, args } => v.visit_call(callee, paren, args),
+            Get { obj, name } => v.visit_get(obj, name),
+            Grouping { expression } => v.visit_grouping(expression),
+            Literal { value } => v.visit_literal(value),
+            Logical { left, oper, right } => v.visit_logical(left, oper, right),
+            Set { obj, name, value } => v.visit_set(obj, name, value),
+            Super { keyword, method } => v.visit_super(keyword, method),
+            This { keyword } => v.visit_this(keyword),
+            Unary { oper, right } => v.visit_unary(oper, right),
+            Variable { name } => v.visit_variable(name),
+        }
+    }
+}
