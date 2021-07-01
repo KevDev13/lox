@@ -10,6 +10,8 @@ mod token;
 use token::*;
 mod scanner;
 use scanner::*;
+mod expr;
+use expr::*;
 
 static mut HAD_ERROR: bool = false;
 

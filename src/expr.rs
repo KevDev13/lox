@@ -1,40 +1,41 @@
 use crate::Token;
 use crate::TokenType;
+use crate::Literal;
 
 pub enum Expr {
     Assign {
         name: Token,
-        value: Expr,
+        value: Box<Expr>,
     },
     Binary {
-        left: Expr,
+        left: Box<Expr>,
         oper: Token,
-        right: Expr,
+        right: Box<Expr>,
     },
     Call {
-        callee: Expr,
+        callee: Box<Expr>,
         paren: Token,
-        args: Vec<Expr>,
+        args: Vec<Box<Expr>>,
     },
     Get {
-        obj: Expr,
+        obj: Box<Expr>,
         name: Token,
     },
     Grouping {
-        expression: Expr,
+        expression: Box<Expr>,
     },
     Literal {
         value: Literal,
     },
     Logical {
-        left: Expr,
+        left: Box<Expr>,
         oper: Token,
-        right: Expr,
+        right: Box<Expr>,
     },
     Set {
-        obj: Expr,
+        obj: Box<Expr>,
         name: Token,
-        value: Expr,
+        value: Box<Expr>,
     },
     Super {
         keyword: Token,
@@ -45,9 +46,28 @@ pub enum Expr {
     },
     Unary {
         oper: Token,
-        right: Expr,
+        right: Box<Expr>,
     },
     Variable {
         name: Token,
     },
+}
+
+pub trait Visitor<T> {
+    fn visit_assign(&mut self, name: &Token, value: &Expr) -> T;
+    fn visit_binary(&mut self, left: &Expr, oper: &Token, right: &Expr) -> T;
+    fn visit_call(&mut self, callee: &Expr, paren: &Token, args: &Vec<Expr>) -> T;
+    fn visit_get(&mut self, obj: &Expr, name: &Token) -> T;
+    fn visit_grouping(&mut self, expression: &Expr) -> T;
+    fn visit_literal(&mut self, value: &Literal) -> T;
+    fn visit_logical(&mut self, left: &Expr, oper: &Token, right: &Expr) -> T;
+    fn visit_set(&mut self, obj: &Expr, name: &Token, value: &Expr) -> T;
+    fn visit_super(&mut self, keyword: &Token, method: &Token) -> T;
+    fn visit_this(&mut self, keyword: &Token) -> T;
+    fn visit_unary(&mut self, oper: &Token, right: &Expr) -> T;
+    fn visit_variable(&mut self, name: &Token) -> T;
+}
+
+pub trait Accept<T> {
+    fn accept(&self, v: &mut dyn Visitor<T>) -> T;
 }
