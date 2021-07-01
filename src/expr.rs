@@ -1,5 +1,4 @@
 use crate::Token;
-use crate::TokenType;
 use crate::Literal;
 
 pub enum Expr {
